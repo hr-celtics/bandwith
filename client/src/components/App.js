@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   BrowserRouter as Router,
   Route,
@@ -19,6 +20,5 @@ const App = () => (
       <Route path="/private" component={Private} />
     </div>
   </Router>
-);
 
 export default App;
