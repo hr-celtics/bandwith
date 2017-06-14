@@ -1,14 +1,15 @@
 /* eslint-disable camelcase */
 import React from 'react';
-import { Card,
+import { Row, Col } from 'react-flexbox-grid';
+import {
+  Card,
   CardHeader,
   CardTitle,
   CardMedia,
 } from 'material-ui/Card';
-import Paper from 'material-ui/Paper';
-import { List, ListItem } from 'material-ui/List';
 import Chip from 'material-ui/Chip';
-import { Row, Col } from 'react-flexbox-grid';
+import { List, ListItem } from 'material-ui/List';
+import Paper from 'material-ui/Paper';
 
 const style = {
   marginTop: 8,
@@ -33,8 +34,7 @@ class ResultsProfile extends React.Component {
       bio,
       age,
       gender,
-      email,
-      zipcode,
+      location,
       instruments,
       genres,
       influences,
@@ -44,10 +44,8 @@ class ResultsProfile extends React.Component {
       song_url,
       photo_src_small,
     } = this.props.currentResult || this.props.currentMatch;
-    const { city, state } = { city: 'city', state: 'state' };
     const fullname = `${first} ${last}`;
     const profile = `${gender}, ${age}`;
-    const location = `${city}, ${state} ${zipcode}`;
 
     if (this.props.currentResult || this.props.currentMatch) {
       let videoId = '';
@@ -56,6 +54,9 @@ class ResultsProfile extends React.Component {
         const videoQuery = videoUrl[videoUrl.length - 1].split('=');
         videoId = videoQuery[videoQuery.length - 1];
       }
+
+      const re = new RegExp(/\d+(?=&)/g);
+      const song_id = song_url && song_url.match(re);
 
       const profileHeader = () => {
         if (this.props.currentResult) {
@@ -77,7 +78,7 @@ class ResultsProfile extends React.Component {
               </Col>
             </Row>);
         }
-        return (<Row />);
+        return (<div style={{ height: '265px' }} />);
       };
 
       return (
@@ -87,15 +88,11 @@ class ResultsProfile extends React.Component {
             <Col xs={12} sm={6}>
               <Paper style={style}>
                 <Card>
-                  <CardTitle title="Personal Info" />
+                  <CardTitle title="General" />
                   <List>
                     <ListItem
                       leftIcon={<i className="material-icons">account_circle</i>}
                       primaryText={profile}
-                    />
-                    <ListItem
-                      leftIcon={<i className="material-icons">email</i>}
-                      primaryText={email}
                     />
                     <ListItem
                       leftIcon={<i className="material-icons">place</i>}
@@ -108,7 +105,7 @@ class ResultsProfile extends React.Component {
             <Col xs={12} sm={6}>
               <Paper style={style}>
                 <Card>
-                  <CardTitle title="Checkout my skills..." />
+                  <CardTitle title="Samples" />
                   <List>
                     <ListItem
                       leftIcon={<i className="material-icons">music_video</i>}
@@ -130,12 +127,12 @@ class ResultsProfile extends React.Component {
                       primaryText="SoundCloud"
                       primaryTogglesNestedList
                       nestedItems={[
-                        <CardMedia key={song_url}>
+                        <CardMedia key={song_id}>
                           <iframe
                             scrolling="no"
                             frameBorder="no"
                             title="audio"
-                            src={song_url}
+                            src={`https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/${song_id}`}
                           />
                         </CardMedia>,
                       ]}
@@ -149,7 +146,7 @@ class ResultsProfile extends React.Component {
             <Col xs={12} sm={6}>
               <Paper style={style}>
                 <Card>
-                  <CardTitle title="Me as a Musician" />
+                  <CardTitle title="Talents" />
                   <List>
                     <ListItem
                       leftIcon={<i className="material-icons">speaker</i>}
@@ -184,7 +181,7 @@ class ResultsProfile extends React.Component {
             <Col xs={12} sm={6}>
               <Paper style={style}>
                 <Card>
-                  <CardTitle title="I am looking for Musicians..." />
+                  <CardTitle title="Preferences" />
                   <List>
                     <ListItem
                       leftIcon={<i className="material-icons">grade</i>}
